@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>22 Laws of Marketing · Live Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   QUIZ SETTINGS ARE IN THE <script> BELOW (look for CONFIG)
+   ========================================================= */
+:root{
+  --bg:#F3F5FF; --surface:#FFFFFF; --ink:#151B45; --muted:#5A6190;
+  --marigold:#F2A900; --indigo:#2A3590; --rani:#D6246E; --leaf:#1E8C5A;
+  --line:#DCE0F5; --tile:#FFFFFF; --tile-ink:#151B45;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#10153A; --surface:#1A2154; --ink:#F1F3FF; --muted:#A9B0DD;
+    --indigo:#8C98FF; --line:#2C3570; --tile:#212A63; --tile-ink:#F1F3FF;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10153A; --surface:#1A2154; --ink:#F1F3FF; --muted:#A9B0DD;
+  --indigo:#8C98FF; --line:#2C3570; --tile:#212A63; --tile-ink:#F1F3FF;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:"Baloo 2", "Nirmala UI", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-size:18px; line-height:1.45; min-height:100vh;
+}
+.wrap{max-width:720px; margin:0 auto; padding:20px 18px 48px}
+header.top{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
+.brand{font-weight:800; font-size:1.05rem; letter-spacing:.01em}
+.brand b{color:var(--rani)}
+.pill{font-size:.85rem; font-weight:600; color:var(--muted); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:4px 12px; white-space:nowrap}
+
+.screen{display:none}
+.screen.on{display:block}
+
+/* Lobby */
+.hero h1{font-size:clamp(2rem,7vw,3.1rem); line-height:1.05; margin:4px 0 10px; font-weight:800}
+.hero p{color:var(--muted); margin:0 0 22px; max-width:34em}
+.clock{
+  background:var(--indigo); color:#fff; border-radius:22px; padding:22px 20px 18px; text-align:center;
+  box-shadow:0 10px 0 -2px var(--marigold);
+}
+.clock .lbl{font-weight:600; opacity:.85}
+.clock .big{font-size:clamp(3rem,15vw,5.4rem); font-weight:800; line-height:1; font-variant-numeric:tabular-nums; margin:6px 0 4px}
+.clock .when{font-weight:600; color:#FFD66B}
+.join{margin-top:30px; display:grid; gap:10px}
+.join label{font-weight:700}
+.row{display:flex; gap:10px; flex-wrap:wrap}
+input[type=text]{
+  flex:1 1 220px; font:inherit; font-size:1.1rem; padding:12px 14px; border-radius:14px;
+  border:2px solid var(--line); background:var(--surface); color:var(--ink);
+}
+input[type=text]:focus{outline:none; border-color:var(--indigo)}
+.btn{
+  font:inherit; font-weight:800; font-size:1.05rem; border:0; cursor:pointer;
+  background:var(--rani); color:#fff; border-radius:14px; padding:12px 22px;
+}
+.btn.alt{background:var(--surface); color:var(--ink); border:2px solid var(--line)}
+.btn:focus-visible, .opt:focus-visible{outline:3px solid var(--marigold); outline-offset:3px}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+.note{color:var(--muted); font-size:.95rem}
+.how{margin-top:28px; border-top:2px dashed var(--line); padding-top:18px}
+.how h2{font-size:1.15rem; margin:0 0 8px}
+.how ol{margin:0; padding-left:1.3em; color:var(--muted)}
+.how li{margin:4px 0}
+
+/* Question */
+.qmeta{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:8px; font-weight:700}
+.law{display:inline-block; background:var(--marigold); color:#1A1400; border-radius:10px; padding:2px 12px; font-weight:800; transform:rotate(-2deg)}
+.score{color:var(--muted); font-variant-numeric:tabular-nums}
+.timer{height:12px; background:var(--line); border-radius:999px; overflow:hidden; margin:10px 0 18px}
+.timer i{display:block; height:100%; width:100%; background:var(--marigold); border-radius:999px; transform-origin:left center}
+.timer.reveal i{background:var(--indigo)}
+.qtext{font-size:clamp(1.35rem,4.6vw,1.8rem); line-height:1.2; font-weight:700; margin:0 0 18px}
+.opts{display:grid; gap:12px}
+.opt{
+  display:flex; align-items:center; gap:14px; width:100%; text-align:left;
+  font:inherit; font-size:1.05rem; font-weight:600; color:var(--tile-ink);
+  background:var(--tile); border:2px solid var(--line); border-radius:16px; padding:12px 14px; cursor:pointer;
+}
+.opt .k{flex:0 0 38px; height:38px; border-radius:50%; display:grid; place-items:center; font-weight:800; color:#fff}
+.opt:nth-child(1) .k{background:var(--rani)}
+.opt:nth-child(2) .k{background:#2B7FD8}
+.opt:nth-child(3) .k{background:var(--leaf)}
+.opt:nth-child(4) .k{background:#E0761B}
+.opt:hover:not([disabled]){border-color:var(--indigo)}
+.opt[disabled]{cursor:default}
+.opt.picked{border-color:var(--indigo); box-shadow:0 0 0 3px var(--indigo) inset}
+.opt.right{border-color:var(--leaf); background:color-mix(in srgb, var(--leaf) 16%, var(--tile))}
+.opt.wrong{border-color:var(--rani); background:color-mix(in srgb, var(--rani) 14%, var(--tile))}
+.opt.dim{opacity:.55}
+.status{margin-top:16px; font-weight:700; min-height:1.5em}
+.explain{
+  margin-top:14px; background:var(--surface); border-left:6px solid var(--marigold);
+  border-radius:12px; padding:14px 16px; display:none;
+}
+.explain.on{display:block}
+.explain strong{display:block; margin-bottom:4px}
+.gain{font-weight:800}
+.gain.ok{color:var(--leaf)} .gain.no{color:var(--rani)}
+
+/* Final */
+.final h1{font-size:clamp(1.8rem,6vw,2.6rem); margin:0 0 6px; line-height:1.1}
+.bigscore{font-size:clamp(3.2rem,16vw,6rem); font-weight:800; line-height:1; color:var(--rani); font-variant-numeric:tabular-nums}
+.review{list-style:none; padding:0; margin:22px 0; display:grid; gap:8px}
+.review li{display:flex; gap:10px; align-items:baseline; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:8px 12px}
+.review .m{font-weight:800; width:1.4em; flex:0 0 auto}
+.review .m.ok{color:var(--leaf)} .review .m.no{color:var(--rani)} .review .m.skip{color:var(--muted)}
+.review small{color:var(--muted)}
+footer{margin-top:36px; color:var(--muted); font-size:.85rem}
+@media (prefers-reduced-motion:reduce){ .timer i{transition:none !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">22 Laws <b>Live Quiz</b></div>
+    <div class="pill" id="who">Not joined</div>
+  </header>
+
+  <!-- LOBBY -->
+  <section class="screen" id="lobby">
+    <div class="hero">
+      <h1>Marketing laws, Indian brands, one live quiz.</h1>
+      <p>22 quick questions on the 22 Immutable Laws of Marketing, explained with brands you see every day: Maggi, Jio, Fevicol, Zerodha and more. Everyone gets the same question at the same moment.</p>
+    </div>
+    <div class="clock">
+      <div class="lbl" id="clockLbl">Quiz starts in</div>
+      <div class="big" id="countdown">--:--:--</div>
+      <div class="when" id="startWhen"></div>
+    </div>
+    <div class="join" id="joinBox">
+      <label for="name">Your name</label>
+      <div class="row">
+        <input type="text" id="name" maxlength="30" placeholder="e.g. Priya S." autocomplete="name">
+        <button class="btn" id="joinBtn">Join quiz</button>
+      </div>
+      <div class="note" id="joinNote">Join now and keep this page open. The first question appears automatically.</div>
+      <div><button class="btn alt" id="practiceBtn3" type="button">Practise on your own first</button></div>
+    </div>
+    <div class="how">
+      <h2>How it works</h2>
+      <ol>
+        <li>Each question is open for <span class="qs">20</span> seconds. Tap one answer; it locks straight away.</li>
+        <li>Correct answers score 500 to 1,000 points. Faster answers score more.</li>
+        <li>After each question you see the right answer and the real brand story.</li>
+        <li>Joined late? You start from the current question. Missed ones score zero.</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- QUESTION -->
+  <section class="screen" id="quiz">
+    <div class="qmeta">
+      <span class="law" id="lawTag">Law 1</span>
+      <span class="score" id="liveScore">0 pts</span>
+    </div>
+    <div class="note" id="qCount">Question 1 of 22</div>
+    <div class="timer" id="timer"><i id="bar"></i></div>
+    <h2 class="qtext" id="qText"></h2>
+    <div class="opts" id="opts"></div>
+    <div class="status" id="status" aria-live="polite"></div>
+    <div class="explain" id="explain"></div>
+  </section>
+
+  <!-- FINAL -->
+  <section class="screen final" id="final">
+    <h1 id="finalTitle">Well played!</h1>
+    <div class="note" id="finalSub"></div>
+    <div class="bigscore" id="finalScore">0</div>
+    <div id="finalCorrect" style="font-weight:700"></div>
+    <div class="row" style="margin-top:18px">
+      <a class="btn" id="shareBtn" target="_blank" rel="noopener" style="text-decoration:none">Share score on WhatsApp</a>
+      <button class="btn alt" id="practiceBtn2">Practise again</button>
+    </div>
+    <ul class="review" id="review"></ul>
+  </section>
+
+  <!-- ENDED (did not join) -->
+  <section class="screen" id="ended">
+    <div class="hero">
+      <h1>Today’s live quiz has finished.</h1>
+      <p id="nextNote">The next live quiz starts at 7:00 PM.</p>
+    </div>
+    <button class="btn" id="practiceBtn">Practise now on your own</button>
+  </section>
+
+  <footer>Based on <em>The 22 Immutable Laws of Marketing</em> by Al Ries &amp; Jack Trout (1993). Brand examples are simplified for learning and drawn from public reporting.</footer>
+</div>
+
+<script>
+/* ===================== CONFIG: EDIT THESE ===================== */
+const CONFIG = {
+  date: null,              // "2026-11-12" for one fixed day, or null = every day
+  time: "19:00",           // 24-hour start time
+  utcOffsetMinutes: 330,   // 330 = India (IST, UTC+5:30)
+  questionSeconds: 20,     // time to answer
+  revealSeconds: 7         // time to show the answer before the next question
+};
+/* Testing tip: open the page with ?test=30 to start a private run 30 s after load. */
+/* ============================================================== */
+
+const QUESTIONS = [
+ {law:1, name:"Leadership",
+  q:"Your friend says “let’s make Maggi” but cooks a different noodle brand. Why does this happen?",
+  o:["Maggi is the only noodle brand in India","Maggi was the first big name in instant noodles, so its name became the word for the whole category","Other noodle brands taste bad","Maggi is always the cheapest"], a:1,
+  e:"Being first beats being better. Maggi came to India in 1983 and became the default word for instant noodles. Rivals can copy the product, but not being the original."},
+ {law:2, name:"Category",
+  q:"The cold-drinks fridge is full of colas. How did Paper Boat get noticed?",
+  o:["It made a cheaper cola","It hired more film stars than Coke","It created a new shelf: traditional Indian drinks like aam panna and jaljeera in packs","It sold only in five-star hotels"], a:2,
+  e:"If you can’t be first in a category, create a new one. Paper Boat didn’t fight Coke and Pepsi. It became first in ‘nostalgic Indian drinks’."},
+ {law:3, name:"Mind",
+  q:"Flipkart (2007) was not India’s first shopping website. Why did it become the name people remember?",
+  o:["It won trust with ideas like cash on delivery, so people remembered it first","It was the oldest website","It only ever sold books","The government chose it"], a:0,
+  e:"Being first in the customer’s mind beats being first to market. Many Indians were afraid to pay online. Flipkart’s cash-on-delivery made it the store people trusted and remembered."},
+ {law:4, name:"Perception",
+  q:"Many riders choose a Royal Enfield even though lighter bikes give better mileage. What are they really buying?",
+  o:["The best mileage in India","The feeling: pride, the famous ‘thump’ and the road-trip image","The cheapest service","The fastest bike on the road"], a:1,
+  e:"Marketing is a battle of perceptions, not products. People buy what they believe a brand stands for. For Royal Enfield, that’s freedom and adventure."},
+ {law:5, name:"Focus",
+  q:"What ONE idea does Fevicol own in your mind?",
+  o:["Cheapest glue","Colourful packaging","Made only for kids","A bond so strong it never breaks"], a:3,
+  e:"Own one word and repeat it for decades. From the famous bus ad to “Fevicol ka mazboot jod”, every Fevicol ad says the same thing: strong bond."},
+ {law:6, name:"Exclusivity",
+  q:"Colgate already owned “strong teeth” in India. How did Patanjali Dant Kanti grow fast?",
+  o:["It also said “strong teeth”","It copied Colgate’s red pack","It gave toothpaste away free","It owned a different word: Ayurvedic and natural"], a:3,
+  e:"Two brands can’t own the same word. Copying Colgate’s message would only remind people of Colgate. Dant Kanti picked an empty word instead."},
+ {law:7, name:"Ladder",
+  q:"Your chai café is the #2 chain in your city. The #1 chain is everywhere. What’s your best move?",
+  o:["Pretend you’re #1 and say “we’re the biggest”","Proudly play the challenger and show clearly what you do differently","Copy #1’s menu exactly","Stop advertising"], a:1,
+  e:"Your strategy depends on your rung of the ladder. A #2 brand can’t act like the leader. It wins by being a bold, honest challenger."},
+ {law:8, name:"Duality",
+  q:"Quiz: which two apps handle most UPI payments in India?",
+  o:["Paytm and BHIM","WhatsApp Pay and Amazon Pay","PhonePe and Google Pay","CRED and MobiKwik"], a:2,
+  e:"Over time, most markets become a two-horse race. In recent NPCI data, PhonePe and Google Pay together handle more than 80% of UPI payments."},
+ {law:9, name:"Opposite",
+  q:"Old stockbrokers charged a percentage on every trade. What did Zerodha do?",
+  o:["Charged even higher fees","Did the opposite: a small flat fee, and zero fee for long-term delivery investing","Opened more branches","Only served rich clients"], a:1,
+  e:"If you’re the challenger, be the leader’s opposite. Zerodha took the thing people disliked about brokers and flipped it, and grew into one of India’s biggest brokers."},
+ {law:10, name:"Division",
+  q:"When 10-minute grocery delivery became its own category, what did Zomato do?",
+  o:["Kept it as a separate brand: Blinkit","Renamed itself “Zomato Groceries”","Ignored it","Shut down food delivery"], a:0,
+  e:"Categories split, and each new slice needs its own brand. Zomato bought Blinkit in 2022 and kept the name, so ‘food’ and ‘quick groceries’ stay clear in people’s minds."},
+ {law:11, name:"Perspective",
+  q:"A clothing brand runs a “50% OFF” sale almost every month. What happens over time?",
+  o:["Profits keep rising forever","The brand starts to look more premium","Nothing changes","Customers learn to wait for the sale and stop paying full price"], a:3,
+  e:"Short-term wins can cause long-term damage. Think about how many people now wait for festive sales before buying a phone. Every discount teaches a habit."},
+ {law:12, name:"Line Extension",
+  q:"Kingfisher was a famous beer brand. In 2005 the same name was put on an airline. What happened?",
+  o:["It became India’s biggest airline forever","The airline shut down in 2012 with huge losses","The beer stopped selling","Nothing at all"], a:1,
+  e:"Stretching a brand usually weakens it. The airline failed for many reasons, but a party-beer name never said ‘safe, reliable airline’. The beer brand survived; the airline didn’t."},
+ {law:13, name:"Sacrifice",
+  q:"Saravana Bhavan serves only vegetarian South Indian food, yet it has restaurants in many countries. What’s the lesson?",
+  o:["Small menus always fail","It was just lucky","Giving things up made it famous for one thing","Menus don’t matter"], a:2,
+  e:"You have to give something up to get something. No pizza, no chicken, no confusion. What a brand refuses to do defines it as much as what it does."},
+ {law:14, name:"Attributes",
+  q:"Lux owned “beauty” with film stars in its ads. Which different idea did Lifebuoy own?",
+  o:["Health and germ protection","Even more beauty","Luxury perfume","Celebrity lifestyle"], a:0,
+  e:"For every attribute there’s an opposite one that works. Instead of fighting Lux on beauty, Lifebuoy owned health. Both became giants."},
+ {law:15, name:"Candor",
+  q:"In 2003, worms were found in some Cadbury Dairy Milk bars. What helped the brand recover?",
+  o:["Hiding the news and saying nothing","Blaming customers","Changing its name","Openly addressing it, adding sealed packaging and running honest ads with Amitabh Bachchan"], a:3,
+  e:"Admit a negative and people will give you a positive. Cadbury faced the problem in public, fixed it and explained the fix. Sales came back."},
+ {law:16, name:"Singularity",
+  q:"In 2016, how did Jio win millions of users so quickly?",
+  o:["Ten small ad campaigns at once","One bold move: free calls and very cheap data for everyone","Only selling in big cities","Copying old telecom prices"], a:1,
+  e:"Only one bold move produces big results. Jio’s single big bet reportedly brought 100 million users in about 170 days and changed Indian telecom."},
+ {law:17, name:"Unpredictability",
+  q:"Byju’s grew huge during lockdowns and expanded fast. What went wrong after schools reopened?",
+  o:["Nothing, it kept growing","It bet the boom would last; when growth slowed, it ran into serious trouble","It became a food brand","It moved to space travel"], a:1,
+  e:"Nobody can predict the future. Plan around trends, keep room to change course, and don’t bet everything on one moment lasting forever."},
+ {law:18, name:"Success",
+  q:"The Ambassador car ruled Indian roads for decades but barely changed. What happened?",
+  o:["It is still India’s top-selling car","It became an electric car brand","Newer cars like Maruti took over, and production stopped in 2014","It was banned"], a:2,
+  e:"Success can lead to arrogance, and arrogance to failure. When a winner stops listening to customers, it starts losing them."},
+ {law:19, name:"Failure",
+  q:"The ₹1 lakh Tata Nano didn’t sell as hoped. What did Ratan Tata later say?",
+  o:["Calling it the “cheapest car” was a mistake","The customers were wrong","Nobody needs cars","Nothing, he never spoke about it"], a:0,
+  e:"Failure is to be expected and accepted. Admitting the mistake (people didn’t want to be seen in the ‘cheapest’ car) is how a company learns. Kill the mistake fast, keep the lesson."},
+ {law:20, name:"Hype",
+  q:"Koo was hyped in 2021 as the “Indian Twitter”, with big names joining. What happened?",
+  o:["It replaced Twitter in India","It bought Twitter","It became bigger than WhatsApp","It shut down in 2024 after struggling to keep users and funding"], a:3,
+  e:"Reality is often the opposite of the headlines. Judge a brand by what customers actually keep doing, not by the buzz."},
+ {law:21, name:"Acceleration",
+  q:"Which of these is a long-term TREND in India, not a fad?",
+  o:["Fidget spinners","Paying by UPI","The ice bucket challenge","One viral dance song"], a:1,
+  e:"Build on trends, not fads. A fad is a spike; a trend is a slope. UPI now handles billions of payments every month, and it keeps growing."},
+ {law:22, name:"Resources",
+  q:"Why did Zomato and Swiggy win food delivery while smaller apps like TinyOwl shut down?",
+  o:["Their logos were nicer","Smaller apps had no good ideas","They had the money to fund delivery fleets, discounts and marketing","Luck only"], a:2,
+  e:"Without enough fuel, even a good idea won’t take off. Ideas need money or a big audience to get into people’s minds."}
+];
+
+const N = QUESTIONS.length;
+const Q_MS = CONFIG.questionSeconds * 1000;
+const R_MS = CONFIG.revealSeconds * 1000;
+const SLOT = Q_MS + R_MS;
+const TOTAL = N * SLOT;
+const $ = id => document.getElementById(id);
+document.querySelectorAll(".qs").forEach(s => s.textContent = CONFIG.questionSeconds);
+
+/* ---------- Shared clock: use the web server’s time so all phones stay in step ---------- */
+let offset = 0;
+const now = () => Date.now() + offset;
+async function syncClock(){
+  if (location.protocol === "file:") return;
+  try{
+    const t0 = Date.now();
+    const r = await fetch(location.href.split("#")[0], {method:"HEAD", cache:"no-store"});
+    const t1 = Date.now();
+    const d = r.headers.get("date");
+    if (d){ const server = new Date(d).getTime() + 500; const o = server - (t0 + t1) / 2; if (Math.abs(o) > 1500) offset = o; }
+  }catch(e){ /* fall back to the device clock */ }
+}
+
+/* ---------- Start time ---------- */
+const params = new URLSearchParams(location.search);
+let practice = false;
+function startFor(dayOffset){
+  const [h, m] = CONFIG.time.split(":").map(Number);
+  const local = new Date(now() + CONFIG.utcOffsetMinutes * 60000);
+  let y = local.getUTCFullYear(), mo = local.getUTCMonth(), d = local.getUTCDate();
+  if (CONFIG.date){ [y, mo, d] = CONFIG.date.split("-").map(Number); mo -= 1; dayOffset = 0; }
+  return Date.UTC(y, mo, d + dayOffset, h, m) - CONFIG.utcOffsetMinutes * 60000;
+}
+let START;
+function pickStart(){
+  if (params.has("test")){ START = Date.now() + (parseInt(params.get("test"), 10) || 20) * 1000; practice = true; return; }
+  START = startFor(0);
+}
+function fmtStart(ts){
+  return new Date(ts).toLocaleString(undefined, {weekday:"short", day:"numeric", month:"short", hour:"numeric", minute:"2-digit"});
+}
+
+/* ---------- Player state (saved so a refresh doesn’t lose answers) ---------- */
+let state = {name:"", answers:{}};
+const key = () => "laws22:" + (practice ? "practice" : START);
+function load(){ try{ const s = JSON.parse(localStorage.getItem(key())); if (s) state = s; }catch(e){} }
+function save(){ try{ localStorage.setItem(key(), JSON.stringify(state)); }catch(e){} }
+function points(){ return Object.values(state.answers).reduce((s, x) => s + (x.pts || 0), 0); }
+function correctCount(){ return Object.values(state.answers).filter(x => x.pts > 0).length; }
+
+/* ---------- Screens ---------- */
+function show(id){ document.querySelectorAll(".screen").forEach(s => s.classList.toggle("on", s.id === id)); }
+function setWho(){ $("who").textContent = state.name ? state.name + " · " + points().toLocaleString() + " pts" : "Not joined"; }
+
+$("joinBtn").onclick = () => {
+  const n = $("name").value.trim();
+  if (!n){ $("joinNote").textContent = "Type your name first, then tap Join quiz."; $("name").focus(); return; }
+  state.name = n; save(); setWho();
+  $("joinNote").textContent = "You’re in, " + n + ". Keep this page open.";
+  $("joinBtn").textContent = "Joined"; $("joinBtn").disabled = true;
+  tick(true);
+};
+$("name").addEventListener("keydown", e => { if (e.key === "Enter") $("joinBtn").click(); });
+
+function startPractice(){
+  practice = true; START = now() + 4000; state = {name: state.name || "Practice", answers:{}};
+  save(); renderedQ = -1; renderedPhase = ""; tick(true);
+}
+$("practiceBtn").onclick = startPractice;
+$("practiceBtn2").onclick = startPractice;
+$("practiceBtn3").onclick = startPractice;
+
+/* ---------- Question rendering ---------- */
+let renderedQ = -1, renderedPhase = "";
+function renderQuestion(i){
+  const Q = QUESTIONS[i];
+  $("lawTag").textContent = "Law " + Q.law + ": " + Q.name;
+  $("qCount").textContent = "Question " + (i + 1) + " of " + N;
+  $("qText").textContent = Q.q;
+  $("explain").className = "explain"; $("explain").innerHTML = "";
+  $("timer").classList.remove("reveal");
+  const box = $("opts"); box.innerHTML = "";
+  const mine = state.answers[i];
+  Q.o.forEach((txt, k) => {
+    const b = document.createElement("button");
+    b.className = "opt"; b.type = "button";
+    b.innerHTML = '<span class="k">' + "ABCD"[k] + '</span><span></span>';
+    b.lastChild.textContent = txt;
+    if (mine){ b.disabled = true; if (mine.c === k) b.classList.add("picked"); }
+    b.onclick = () => answer(i, k);
+    box.appendChild(b);
+  });
+  $("status").textContent = mine ? "Answer locked. Wait for the reveal." : "";
+}
+function answer(i, k){
+  if (state.answers[i]) return;
+  const t = now() - START - i * SLOT;
+  if (t < 0 || t >= Q_MS) return;
+  const ok = k === QUESTIONS[i].a;
+  state.answers[i] = {c:k, pts: ok ? Math.round(500 + 500 * (1 - t / Q_MS)) : 0};
+  save();
+  [...$("opts").children].forEach((b, j) => { b.disabled = true; if (j === k) b.classList.add("picked"); });
+  $("status").textContent = "Answer locked. Wait for the reveal.";
+}
+function renderReveal(i){
+  const Q = QUESTIONS[i], mine = state.answers[i];
+  [...$("opts").children].forEach((b, j) => {
+    b.disabled = true;
+    if (j === Q.a) b.classList.add("right");
+    else if (mine && mine.c === j) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  $("timer").classList.add("reveal");
+  let msg;
+  if (!mine) msg = '<span class="gain no">No answer this time.</span>';
+  else if (mine.pts) msg = '<span class="gain ok">Correct! +' + mine.pts + ' points</span>';
+  else msg = '<span class="gain no">Not this time. The answer was ' + "ABCD"[Q.a] + '.</span>';
+  $("status").innerHTML = msg;
+  $("explain").innerHTML = "<strong>Law " + Q.law + ": " + Q.name + "</strong>";
+  $("explain").appendChild(document.createTextNode(Q.e));
+  $("explain").classList.add("on");
+  $("liveScore").textContent = points().toLocaleString() + " pts";
+  setWho();
+}
+function renderFinal(){
+  $("finalTitle").textContent = practice ? "Practice complete!" : "Well played, " + (state.name || "friend") + "!";
+  $("finalSub").textContent = "Your total score";
+  $("finalScore").textContent = points().toLocaleString();
+  const c = correctCount();
+  $("finalCorrect").textContent = c + " of " + N + " correct";
+  const txt = "I scored " + points().toLocaleString() + " points (" + c + "/" + N + ") in the 22 Laws of Marketing live quiz! " + location.origin + location.pathname;
+  $("shareBtn").href = "https://wa.me/?text=" + encodeURIComponent(txt);
+  const ul = $("review"); ul.innerHTML = "";
+  QUESTIONS.forEach((Q, i) => {
+    const a = state.answers[i];
+    const li = document.createElement("li");
+    const cls = !a ? "skip" : a.pts ? "ok" : "no";
+    li.innerHTML = '<span class="m ' + cls + '">' + (!a ? "–" : a.pts ? "✓" : "✗") + '</span><span><b></b><br><small></small></span>';
+    li.querySelector("b").textContent = "Law " + Q.law + ": " + Q.name;
+    li.querySelector("small").textContent = "Answer: " + Q.o[Q.a];
+    ul.appendChild(li);
+  });
+  setWho();
+}
+
+/* ---------- Main loop: every phone works out the same question from the clock ---------- */
+function pad(n){ return String(n).padStart(2, "0"); }
+function tick(force){
+  const e = now() - START;
+  if (e < 0){
+    show("lobby");
+    $("clockLbl").textContent = practice ? "Practice starts in" : "Quiz starts in";
+    const s = Math.ceil(-e / 1000);
+    $("countdown").textContent = pad(Math.floor(s / 3600)) + ":" + pad(Math.floor(s / 60) % 60) + ":" + pad(s % 60);
+    $("startWhen").textContent = practice ? "Practice run" : fmtStart(START);
+    return;
+  }
+  if (e >= TOTAL){
+    if (practice || Object.keys(state.answers).length || state.name){
+      if (renderedPhase !== "final"){ renderFinal(); renderedPhase = "final"; }
+      show("final");
+    } else {
+      const next = CONFIG.date ? null : startFor(1);
+      $("nextNote").textContent = next ? "The next live quiz starts " + fmtStart(next) + "." : "This was a one-day quiz. You can still practise below.";
+      show("ended");
+    }
+    return;
+  }
+  if (!state.name){ show("lobby"); $("clockLbl").textContent = "Quiz is live now"; $("countdown").textContent = "Q" + (Math.floor(e / SLOT) + 1); $("startWhen").textContent = "Enter your name to jump in"; return; }
+
+  show("quiz");
+  const i = Math.floor(e / SLOT), t = e % SLOT;
+  const phase = t < Q_MS ? "q" : "r";
+  if (force || i !== renderedQ){ renderQuestion(i); renderedQ = i; renderedPhase = ""; }
+  if (phase === "q"){
+    $("bar").style.transform = "scaleX(" + Math.max(0, 1 - t / Q_MS) + ")";
+    if (!state.answers[i]) $("status").textContent = Math.ceil((Q_MS - t) / 1000) + " seconds left";
+  } else {
+    $("bar").style.transform = "scaleX(" + Math.max(0, 1 - (t - Q_MS) / R_MS) + ")";
+    if (renderedPhase !== "r"){ renderReveal(i); renderedPhase = "r"; }
+  }
+  $("liveScore").textContent = points().toLocaleString() + " pts";
+}
+
+(async function init(){
+  await syncClock();
+  pickStart();
+  // If today’s quiz has already finished, count down to tomorrow’s (daily mode only).
+  if (!practice && !CONFIG.date && now() > START + TOTAL){
+    const tomorrow = startFor(1);
+    const saved = (()=>{ try{ return localStorage.getItem("laws22:" + START); }catch(e){ return null; } })();
+    if (!saved) START = tomorrow;
+  }
+  load();
+  if (params.has("test")) state = {name:"", answers:{}};
+  if (state.name){ $("name").value = state.name; $("joinBtn").textContent = "Joined"; $("joinBtn").disabled = true; $("joinNote").textContent = "You’re in, " + state.name + ". Keep this page open."; }
+  setWho();
+  tick(true);
+  setInterval(() => tick(false), 200);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden){ syncClock(); tick(true); } });
+})();
+</script>
+</body>
+</html>
