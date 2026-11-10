@@ -319,6 +319,108 @@ const QUESTIONS = [
   e:"Without enough fuel, even a good idea won’t take off. Ideas need money or a big audience to get into people’s minds."}
 ];
 
+
+/* Practice uses a DIFFERENT set of 22 questions, so practising never reveals the live answers. */
+const PRACTICE_QUESTIONS = [
+ {law:1, name:"Leadership",
+  q:"In many shops, people ask for “a Bisleri” even when they just want any bottle of water. Why?",
+  o:["Bisleri is the only water brand","Bisleri was the first big bottled-water name, so it became the word for it","Bisleri is always free","The government made it the rule"], a:1,
+  e:"Being first beats being better. Bisleri led bottled water in India so early that its name became the everyday word for the whole category."},
+ {law:2, name:"Category",
+  q:"Big shampoo brands already filled the shelf. Where did Mamaearth start in 2016?",
+  o:["A cheaper copy of the leading shampoo","Toxin-free baby care, a smaller shelf it could be first in","Luxury perfume","Energy drinks"], a:1,
+  e:"If you can’t be first in a category, create one you can be first in. Mamaearth began with toxin-free products for babies and built from there."},
+ {law:3, name:"Mind",
+  q:"Budget hotels existed long before OYO. Why do many people now say “just book an OYO”?",
+  o:["OYO built every hotel itself","OYO was the first hotel in India","OYO made budget rooms easy to book and remember under one name","Hotels are not allowed other names"], a:2,
+  e:"Being first in the customer’s mind beats being first to market. OYO put thousands of small hotels under one simple, memorable name."},
+ {law:4, name:"Perception",
+  q:"Gold is gold. Why do many families pay more to buy it at Tanishq?",
+  o:["Tanishq gold is a different metal","They trust the purity and the Tata name","It is always the cheapest","Shops elsewhere sell no gold"], a:1,
+  e:"Marketing is a battle of perceptions, not products. People pay for what they believe: here, trust that the gold is pure."},
+ {law:5, name:"Focus",
+  q:"Surf Excel’s ads say “Daag achhe hain” (stains are good). Which one idea does Surf Excel own?",
+  o:["Cheapest detergent","Best fragrance","Removing tough stains, so kids can play freely","Made for hotels"], a:2,
+  e:"Own one idea and repeat it for years. Every Surf Excel ad comes back to stains, and the brand owns that idea in people’s minds."},
+ {law:6, name:"Exclusivity",
+  q:"Colgate owned “strong teeth”. Which different idea did Close-Up choose?",
+  o:["Also “strong teeth”","Fresh breath and the confidence to get close","Cheapest toothpaste","Toothpaste for pets"], a:1,
+  e:"Two brands can’t own the same word. Close-Up didn’t fight Colgate on strength. It owned freshness and confidence instead."},
+ {law:7, name:"Ladder",
+  q:"Your mobile shop is the #2 shop in your area. The #1 shop is much bigger. What should you do?",
+  o:["Put up a board saying “We are #1”","Copy everything the big shop does","Show proudly what makes you different, like faster repairs or friendlier service","Close on weekends"], a:2,
+  e:"Your strategy depends on your rung of the ladder. A #2 player wins by being a clear, confident challenger, not a smaller copy of #1."},
+ {law:8, name:"Duality",
+  q:"Quiz: which two apps lead food delivery in India?",
+  o:["Swiggy and Zomato","Ola and Uber","Myntra and Ajio","Paytm and CRED"], a:0,
+  e:"Over time, most markets become a two-horse race. Indian food delivery is mostly Swiggy versus Zomato."},
+ {law:9, name:"Opposite",
+  q:"Coca-Cola stood for “classic, original”. How did Pepsi position itself in India?",
+  o:["Even more classic","For older people only","Young and bold: “Yeh Dil Maange More”","As a health drink"], a:2,
+  e:"If you’re the challenger, be the leader’s opposite. Pepsi chose youth and energy against Coke’s tradition."},
+ {law:10, name:"Division",
+  q:"When electric cars became their own category, what did Tata Motors do?",
+  o:["Stopped making cars","Created a separate EV brand identity, Tata.ev, with its own showrooms","Renamed every car “Nano”","Only sold EVs abroad"], a:1,
+  e:"Categories split, and each new slice needs its own clear brand. Tata gave its EVs a separate identity so ‘electric’ stood out."},
+ {law:11, name:"Perspective",
+  q:"An app gives big cashback on every order for a year, then stops. What usually happens?",
+  o:["Orders go up even more","Many users stop ordering or move to another app with offers","Nothing changes","The app becomes premium"], a:1,
+  e:"Short-term tricks can hurt long-term. Heavy cashback teaches people to come for the offer, not the brand."},
+ {law:12, name:"Line Extension",
+  q:"Imagine Fevicol launched a chocolate bar. Would it work?",
+  o:["Yes, Fevicol is famous so anything sells","No, a glue name makes you think ‘sticky glue’, not ‘tasty chocolate’","Yes, if it is cheap","Only in schools"], a:1,
+  e:"Stretching a brand into unrelated products usually weakens it. The more things a brand stands for, the less it means."},
+ {law:13, name:"Sacrifice",
+  q:"In 2009, Bajaj stopped making its famous scooters. Why?",
+  o:["Scooters became illegal","To focus fully on motorcycles like Pulsar","It ran out of steel","It moved to making cars"], a:1,
+  e:"You have to give something up to get something. Dropping scooters let Bajaj become known for motorcycles."},
+ {law:14, name:"Attributes",
+  q:"Red Bull owns “premium energy drink”. Which opposite attribute helped Sting grow in India?",
+  o:["Even more premium","Low price: an energy drink at about ₹20","Only sold in gyms","Bigger logo"], a:1,
+  e:"For every attribute there’s an opposite that works. Sting didn’t copy Red Bull’s premium image; it owned ‘affordable’."},
+ {law:15, name:"Candor",
+  q:"A local restaurant posts: “Our delivery used to be slow. We fixed it, and now it’s under 30 minutes.” What’s the likely effect?",
+  o:["People trust the new claim more because the brand admitted the problem","Everyone stops ordering","Nobody reads it","The restaurant gets fined"], a:0,
+  e:"Admit a negative and customers give you a positive. Honesty makes the next claim believable."},
+ {law:16, name:"Singularity",
+  q:"In 1969 Nirma took on big detergent brands. What was its one bold move?",
+  o:["Ten different ad campaigns","Washing powder at a fraction of the leader’s price","Only selling abroad","Making soap for cars"], a:1,
+  e:"Only one bold move produces big results. Nirma’s low price opened detergent to millions of homes."},
+ {law:17, name:"Unpredictability",
+  q:"In 2020 many companies made huge amounts of hand sanitizer. What happened when the pandemic eased?",
+  o:["Demand stayed the same forever","Demand dropped, and many were left with extra stock","Sanitizer became illegal","Prices went up 10 times"], a:1,
+  e:"You can’t predict the future. Ride the wave, but don’t bet everything that it will last."},
+ {law:18, name:"Success",
+  q:"Micromax was one of India’s top phone brands around 2014. Why did it fall behind?",
+  o:["It got too successful and stopped improving while new brands offered better phones","Phones were banned","It became a car company","It was always small"], a:0,
+  e:"Success can lead to arrogance, and arrogance to failure. When a leader stops improving, rivals take its customers."},
+ {law:19, name:"Failure",
+  q:"Zomato tried grocery delivery and many foreign markets, then shut many of them quickly. Was that smart?",
+  o:["No, never close anything","Yes, cutting losses early let it focus money on what worked","No, it should have stopped food delivery","It made no difference"], a:1,
+  e:"Failure is expected and accepted. Admit it early, cut losses, and keep the lessons."},
+ {law:20, name:"Hype",
+  q:"Hike Messenger was hyped as “India’s own WhatsApp”. What happened?",
+  o:["It beat WhatsApp","It shut its chat app in 2021","It became India’s biggest bank","It bought Instagram"], a:1,
+  e:"Reality is often the opposite of the headlines. Judge a brand by what people keep using, not the buzz."},
+ {law:21, name:"Acceleration",
+  q:"Which of these is a long-term TREND, not a fad?",
+  o:["Selfie-stick craze","Kiki dance challenge","Electric scooters","A one-week viral meme"], a:2,
+  e:"Build on trends, not fads. A fad is a spike; a trend is a slope. Electric two-wheelers keep growing year after year."},
+ {law:22, name:"Resources",
+  q:"Snapdeal was once a big Indian shopping site. Why did it fall behind Flipkart and Amazon?",
+  o:["Its name was too long","Rivals had far more money for deliveries, discounts and marketing","Online shopping was banned","It only sold books"], a:1,
+  e:"Without enough fuel, even a good idea won’t win. Ideas need money or a big audience to stay in people’s minds."}
+];
+// Mix up where the right answer sits in the practice set (same order on every phone).
+PRACTICE_QUESTIONS.forEach((Q, i) => {
+  const order = [0, 1, 2, 3];
+  let seed = i * 7919 + 17;
+  for (let k = 3; k > 0; k--){ seed = (seed * 1103515245 + 12345) % 2147483648; const j = seed % (k + 1); [order[k], order[j]] = [order[j], order[k]]; }
+  const right = Q.o[Q.a];
+  Q.o = order.map(n => Q.o[n]);
+  Q.a = Q.o.indexOf(right);
+});
+let qset = QUESTIONS;
 const N = QUESTIONS.length;
 const Q_MS = CONFIG.questionSeconds * 1000;
 const R_MS = CONFIG.revealSeconds * 1000;
@@ -353,7 +455,7 @@ function startFor(dayOffset){
 }
 let START;
 function pickStart(){
-  if (params.has("test")){ START = Date.now() + (parseInt(params.get("test"), 10) || 20) * 1000; practice = true; return; }
+  if (params.has("test")){ START = Date.now() + (parseInt(params.get("test"), 10) || 20) * 1000; return; }
   START = startFor(0);
 }
 function fmtStart(ts){
@@ -384,7 +486,7 @@ $("name").addEventListener("keydown", e => { if (e.key === "Enter") $("joinBtn")
 
 function startPractice(){
   $("boardBox").hidden = true;
-  practice = true; START = now() + 4000; state = {name: state.name || "Practice", answers:{}};
+  practice = true; qset = PRACTICE_QUESTIONS; START = now() + 4000; state = {name: state.name || "Practice", answers:{}};
   save(); renderedQ = -1; renderedPhase = ""; tick(true);
 }
 $("practiceBtn").onclick = startPractice;
@@ -394,7 +496,7 @@ $("practiceBtn3").onclick = startPractice;
 /* ---------- Question rendering ---------- */
 let renderedQ = -1, renderedPhase = "";
 function renderQuestion(i){
-  const Q = QUESTIONS[i];
+  const Q = qset[i];
   $("lawTag").textContent = "Law " + Q.law + ": " + Q.name;
   $("qCount").textContent = "Question " + (i + 1) + " of " + N;
   $("qText").textContent = Q.q;
@@ -417,14 +519,14 @@ function answer(i, k){
   if (state.answers[i]) return;
   const t = now() - START - i * SLOT;
   if (t < 0 || t >= Q_MS) return;
-  const ok = k === QUESTIONS[i].a;
+  const ok = k === qset[i].a;
   state.answers[i] = {c:k, pts: ok ? Math.round(500 + 500 * (1 - t / Q_MS)) : 0};
   save();
   [...$("opts").children].forEach((b, j) => { b.disabled = true; if (j === k) b.classList.add("picked"); });
   $("status").textContent = "Answer locked. Wait for the reveal.";
 }
 function renderReveal(i){
-  const Q = QUESTIONS[i], mine = state.answers[i];
+  const Q = qset[i], mine = state.answers[i];
   [...$("opts").children].forEach((b, j) => {
     b.disabled = true;
     if (j === Q.a) b.classList.add("right");
@@ -444,7 +546,7 @@ function renderReveal(i){
   setWho();
 }
 function renderFinal(){
-  $("finalTitle").textContent = practice ? "Practice complete!" : "Well played, " + (state.name || "friend") + "!";
+  $("finalTitle").textContent = practice ? "Practice complete! (practice questions)" : "Well played, " + (state.name || "friend") + "!";
   $("finalSub").textContent = "Your total score";
   $("finalScore").textContent = points().toLocaleString();
   const c = correctCount();
@@ -452,7 +554,7 @@ function renderFinal(){
   const txt = "I scored " + points().toLocaleString() + " points (" + c + "/" + N + ") in the 22 Laws of Marketing live quiz! " + location.origin + location.pathname;
   $("shareBtn").href = "https://wa.me/?text=" + encodeURIComponent(txt);
   const ul = $("review"); ul.innerHTML = "";
-  QUESTIONS.forEach((Q, i) => {
+  qset.forEach((Q, i) => {
     const a = state.answers[i];
     const li = document.createElement("li");
     const cls = !a ? "skip" : a.pts ? "ok" : "no";
