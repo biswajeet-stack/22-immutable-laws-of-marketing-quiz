@@ -122,6 +122,12 @@ input[type=text]:focus{outline:none; border-color:var(--indigo)}
 .review .m{font-weight:800; width:1.4em; flex:0 0 auto}
 .review .m.ok{color:var(--leaf)} .review .m.no{color:var(--rani)} .review .m.skip{color:var(--muted)}
 .review small{color:var(--muted)}
+.board{margin-top:26px; background:var(--surface); border:2px solid var(--line); border-radius:18px; padding:16px 18px}
+.board h2{margin:0 0 4px; font-size:1.3rem}
+.board ol{margin:10px 0 12px; padding-left:1.6em}
+.board li{padding:4px 0; border-bottom:1px dashed var(--line); font-variant-numeric:tabular-nums}
+.board li.me{font-weight:800; color:var(--rani)}
+.board li span{float:right; font-weight:700}
 footer{margin-top:36px; color:var(--muted); font-size:.85rem}
 @media (prefers-reduced-motion:reduce){ .timer i{transition:none !important} }
 </style>
@@ -188,6 +194,12 @@ footer{margin-top:36px; color:var(--muted); font-size:.85rem}
       <a class="btn" id="shareBtn" target="_blank" rel="noopener" style="text-decoration:none">Share score on WhatsApp</a>
       <button class="btn alt" id="practiceBtn2">Practise again</button>
     </div>
+    <div class="board" id="boardBox" hidden>
+      <h2>Class leaderboard</h2>
+      <div class="note" id="saveNote" aria-live="polite"></div>
+      <ol id="board"></ol>
+      <button class="btn alt" id="boardBtn" type="button">Refresh leaderboard</button>
+    </div>
     <ul class="review" id="review"></ul>
   </section>
 
@@ -206,11 +218,12 @@ footer{margin-top:36px; color:var(--muted); font-size:.85rem}
 <script>
 /* ===================== CONFIG: EDIT THESE ===================== */
 const CONFIG = {
-  date: "2026-11-12",              // "2026-11-12" for one fixed day, or null = every day
+  date: null,              // "2026-11-12" for one fixed day, or null = every day
   time: "19:00",           // 24-hour start time
   utcOffsetMinutes: 330,   // 330 = India (IST, UTC+5:30)
   questionSeconds: 20,     // time to answer
-  revealSeconds: 7         // time to show the answer before the next question
+  revealSeconds: 7,        // time to show the answer before the next question
+  sheetUrl: "https://script.google.com/macros/s/AKfycbwE38kf3fyjnYiwvK5_ocvY4_rrc4ygSK-Aud-t2rGNxjchAhJ8BUM0EEEnE1rvfyL-uA/exec"             // paste your Google Apps Script web app URL here (ends in /exec)
 };
 /* Testing tip: open the page with ?test=30 to start a private run 30 s after load. */
 /* ============================================================== */
@@ -370,6 +383,7 @@ $("joinBtn").onclick = () => {
 $("name").addEventListener("keydown", e => { if (e.key === "Enter") $("joinBtn").click(); });
 
 function startPractice(){
+  $("boardBox").hidden = true;
   practice = true; START = now() + 4000; state = {name: state.name || "Practice", answers:{}};
   save(); renderedQ = -1; renderedPhase = ""; tick(true);
 }
@@ -450,6 +464,59 @@ function renderFinal(){
   setWho();
 }
 
+/* ---------- Google Sheet scoreboard ---------- */
+function deviceId(){
+  try{
+    let id = localStorage.getItem("laws22:device");
+    if (!id){ id = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem("laws22:device", id); }
+    return id;
+  }catch(e){ return "anon-" + Math.random().toString(36).slice(2); }
+}
+function sessionLabel(){
+  const d = new Date(START + CONFIG.utcOffsetMinutes * 60000).toISOString();
+  return d.slice(0, 10) + " " + d.slice(11, 16);
+}
+async function submitScore(){
+  if (!CONFIG.sheetUrl || practice) return;
+  $("boardBox").hidden = false;
+  if (state.submitted){ $("saveNote").textContent = "Your score is saved."; loadBoard(); return; }
+  $("saveNote").textContent = "Saving your score…";
+  const answers = QUESTIONS.map((Q, i) => { const a = state.answers[i]; return !a ? "-" : a.pts ? "1" : "0"; }).join("");
+  const body = JSON.stringify({session: sessionLabel(), name: state.name, score: points(), correct: correctCount(), answers, device: deviceId()});
+  for (let attempt = 0; attempt < 3; attempt++){
+    try{
+      await fetch(CONFIG.sheetUrl, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body});
+      state.submitted = true; save();
+      $("saveNote").textContent = "Your score is saved. Rankings update as classmates finish.";
+      setTimeout(loadBoard, 1500);
+      return;
+    }catch(e){ await new Promise(r => setTimeout(r, 1500 * (attempt + 1))); }
+  }
+  $("saveNote").textContent = "Couldn’t save your score. Check your internet, then tap Refresh leaderboard.";
+}
+async function loadBoard(){
+  if (!CONFIG.sheetUrl) return;
+  if (!state.submitted && !practice) return submitScore();
+  try{
+    const r = await fetch(CONFIG.sheetUrl + "?session=" + encodeURIComponent(sessionLabel()) + "&device=" + encodeURIComponent(deviceId()) + "&t=" + Date.now());
+    const data = await r.json();
+    const ol = $("board"); ol.innerHTML = "";
+    const me = deviceId();
+    (data.top || []).forEach(row => {
+      const li = document.createElement("li");
+      if (row.device === me) li.className = "me";
+      li.textContent = row.name;
+      const sp = document.createElement("span"); sp.textContent = Number(row.score).toLocaleString();
+      li.appendChild(sp); ol.appendChild(li);
+    });
+    if (data.yourRank) $("saveNote").textContent = "You’re #" + data.yourRank + " of " + data.players + " players so far.";
+    else if (!(data.top || []).length) $("saveNote").textContent = "No scores yet. Tap Refresh in a few seconds.";
+  }catch(e){
+    $("saveNote").textContent = "Couldn’t load the leaderboard. Tap Refresh to try again.";
+  }
+}
+$("boardBtn").onclick = () => { $("saveNote").textContent = "Loading…"; loadBoard(); };
+
 /* ---------- Main loop: every phone works out the same question from the clock ---------- */
 function pad(n){ return String(n).padStart(2, "0"); }
 function tick(force){
@@ -464,7 +531,7 @@ function tick(force){
   }
   if (e >= TOTAL){
     if (practice || Object.keys(state.answers).length || state.name){
-      if (renderedPhase !== "final"){ renderFinal(); renderedPhase = "final"; }
+      if (renderedPhase !== "final"){ renderFinal(); renderedPhase = "final"; submitScore(); }
       show("final");
     } else {
       const next = CONFIG.date ? null : startFor(1);
